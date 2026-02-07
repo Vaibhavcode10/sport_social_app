@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User, Game, Group, Message, Turf, Notification } from './types';
+import type { User, Game, Group, Message, Turf, Notification } from './types';
 
 const API_BASE_URL = 'https://us-central1-axilam.cloudfunctions.net/sport_api/api';
 
