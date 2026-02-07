@@ -20,8 +20,11 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   role: 'player' | 'turf_owner' | 'admin';
+  location?: string;
+  business_name?: string;
+  business_address?: string;
   profile?: UserProfile;
   stats?: UserStats;
   created_at: string;

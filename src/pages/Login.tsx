@@ -6,6 +6,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [userType, setUserType] = useState<'player' | 'turf_owner' | 'admin'>('player');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -15,12 +16,12 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await userAPI.login(email);
+      const response = await userAPI.login(email, password);
       const user = response.user;
 
       // Store user in localStorage
       localStorage.setItem('user', JSON.stringify(user));
-localStorage.setItem('userRole', user.role);
+      localStorage.setItem('userRole', user.role);
 
       // Redirect based on user role
       if (user.role === 'player') {
@@ -31,7 +32,7 @@ localStorage.setItem('userRole', user.role);
         navigate('/admin/dashboard');
       }
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed. Please check your email.');
+      setError(err.response?.data?.error || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
@@ -121,6 +122,22 @@ localStorage.setItem('userRole', user.role);
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your.email@example.com"
                 required
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                minLength={6}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
               />
             </div>

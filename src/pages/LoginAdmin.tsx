@@ -1,17 +1,43 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { userAPI } from '../api';
 
 const LoginAdmin = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // API call will go here
-    console.log('Admin login:', formData);
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await userAPI.login(formData.email, formData.password);
+      const user = response.user;
+
+      // Check if user is admin
+      if (user.role !== 'admin') {
+        setError('Access denied. This login is only for administrators.');
+        setLoading(false);
+        return;
+      }
+
+      // Store user in localStorage
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('userRole', user.role);
+
+      // Navigate to admin dashboard
+      navigate('/admin/dashboard');
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -74,8 +100,15 @@ const LoginAdmin = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all"
                 placeholder="••••••••"
                 required
+                minLength={6}
               />
             </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
 
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center space-x-2">
@@ -89,9 +122,10 @@ const LoginAdmin = () => {
 
             <button
               type="submit"
-              className="w-full py-3.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+              disabled={loading}
+              className="w-full py-3.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              Access Admin Panel
+              {loading ? 'Verifying...' : 'Access Admin Panel'}
             </button>
           </form>
 

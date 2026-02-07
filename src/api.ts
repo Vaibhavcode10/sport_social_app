@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { User, Game, Group, Message, Turf, Notification } from './types';
 
-const API_BASE_URL = 'https://us-central1-axilam.cloudfunctions.net/sport_api/api';
+const API_BASE_URL = 'https://sport-api-grsqjakhza-uc.a.run.app/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -10,13 +10,15 @@ const api = axios.create({
   },
 });
 
-// User APIs
+// User APIs (Player)
 export const userAPI = {
   register: async (userData: {
     name: string;
     email: string;
+    password: string;
     phone: string;
-    role: 'player' | 'turf_owner' | 'admin';
+    location: string;
+    sports_interests: string[];
     avatar?: string;
     bio?: string;
     skill_level?: string;
@@ -25,8 +27,8 @@ export const userAPI = {
     return response.data;
   },
 
-  login: async (email: string) => {
-    const response = await api.post('/users/login', { email });
+  login: async (email: string, password: string) => {
+    const response = await api.post('/users/login', { email, password });
     return response.data;
   },
 
@@ -110,8 +112,51 @@ export const groupAPI = {
   },
 };
 
+// Turf Owner APIs
+export const turfOwnerAPI = {
+  register: async (ownerData: {
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+    business_name: string;
+    business_address: string;
+    sports_interests?: string[];
+  }) => {
+    const response = await api.post('/turf-owners/register', ownerData);
+    return response.data;
+  },
+
+  login: async (email: string, password: string) => {
+    const response = await api.post('/turf-owners/login', { email, password });
+    return response.data;
+  },
+};
+
 // Turf APIs
 export const turfAPI = {
+  create: async (turfData: {
+    owner_id: string;
+    name: string;
+    sport: string;
+    location: {
+      address: string;
+      lat: number;
+      lng: number;
+    };
+    pricing: {
+      per_hour: number;
+    };
+    timings: {
+      opening: string;
+      closing: string;
+    };
+    features?: string[];
+    images?: string[];
+  }) => {
+    const response = await api.post('/turfs/create', turfData);
+    return response.data;
+  },
   searchNearby: async (searchData: {
     lat: number;
     lng: number;

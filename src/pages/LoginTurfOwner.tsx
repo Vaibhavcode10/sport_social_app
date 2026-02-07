@@ -1,20 +1,62 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { turfOwnerAPI } from '../api';
 
 const LoginTurfOwner = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    name: '',
     businessName: '',
+    businessAddress: '',
     phone: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // API call will go here
-    console.log('Turf owner login/signup:', formData);
+    setError('');
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        // Login
+        const response = await turfOwnerAPI.login(formData.email, formData.password);
+        const user = response.user;
+        
+        // Store user in localStorage
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('userRole', user.role);
+        
+        // Navigate to turf owner dashboard
+        navigate('/turf-owner/dashboard');
+      } else {
+        // Registration
+        const response = await turfOwnerAPI.register({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          phone: formData.phone,
+          business_name: formData.businessName,
+          business_address: formData.businessAddress,
+        });
+        const user = response.user;
+        
+        // Store user in localStorage
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('userRole', user.role);
+        
+        // Navigate to turf owner dashboard
+        navigate('/turf-owner/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Operation failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,19 +89,47 @@ const LoginTurfOwner = () => {
         <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200 p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Business Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.businessName}
-                  onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
-                  placeholder="Elite Sports Arena"
-                  required={!isLogin}
-                />
-              </div>
+              <>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
+                    placeholder="John Doe"
+                    required={!isLogin}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.businessName}
+                    onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
+                    placeholder="Elite Sports Arena"
+                    required={!isLogin}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Business Address
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.businessAddress}
+                    onChange={(e) => setFormData({ ...formData, businessAddress: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
+                    placeholder="123 Stadium Road, City"
+                    required={!isLogin}
+                  />
+                </div>
+              </>
             )}
 
             <div>
@@ -103,8 +173,15 @@ const LoginTurfOwner = () => {
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
                 placeholder="••••••••"
                 required
+                minLength={6}
               />
             </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
 
             {isLogin && (
               <div className="flex items-center justify-between text-sm">
