@@ -25,6 +25,9 @@ export interface User {
   location?: string;
   business_name?: string;
   business_address?: string;
+  bio?: string;
+  skill_level?: string;
+  sports_interests?: string[];
   profile?: UserProfile;
   stats?: UserStats;
   created_at: string;
@@ -56,6 +59,7 @@ export interface Game {
   date: string;
   time: string;
   status: 'open' | 'full';
+  group_id?: string;
   distance_km?: number;
   created_at: string;
 }
@@ -68,7 +72,9 @@ export interface GroupMember {
 
 export interface Group {
   id: string;
+  name?: string;
   post_id: string;
+  created_by?: string;
   members: GroupMember[];
   created_at: string;
   turf_booking?: any;
@@ -77,6 +83,7 @@ export interface Group {
 
 export interface Message {
   id: string;
+  message_id: string;
   user_id: string;
   user_name: string;
   message: string;
@@ -86,12 +93,15 @@ export interface Message {
 // Turf Types
 export interface Turf {
   id: string;
+  turf_id: string;
   owner_id: string;
   owner_name: string;
   name: string;
   location: Location;
+  sport: string;
   sports: string[];
   facilities: string[];
+  features?: string[];
   pricing: {
     per_hour: number;
     currency: string;
@@ -112,12 +122,15 @@ export interface Turf {
 // Notification Types
 export interface Notification {
   id: string;
+  notification_id: string;
   user_id: string;
   type: string;
   title: string;
   message: string;
+  related_id?: string;
   metadata?: any;
   read: boolean;
+  is_read: boolean;
   created_at: string;
 }
 

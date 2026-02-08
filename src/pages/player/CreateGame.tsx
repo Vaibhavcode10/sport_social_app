@@ -60,10 +60,19 @@ export default function CreateGame() {
     setLoading(true);
 
     try {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      // Get userId from localStorage
+      const userId = localStorage.getItem('userId') || JSON.parse(localStorage.getItem('user') || '{}').id;
       
-      await gameAPI.createGame({
-        user_id: user.id,
+      if (!userId) {
+        setError('User not logged in. Please log in again.');
+        setLoading(false);
+        return;
+      }
+
+      console.log('Creating game with user ID:', userId);
+      
+      const response = await gameAPI.createGame({
+        user_id: userId,
         sport: formData.sport,
         players_needed: formData.playersNeeded,
         location: {
@@ -76,9 +85,18 @@ export default function CreateGame() {
         time: formData.time,
       });
 
+      console.log('Game created successfully:', response);
       navigate('/player/my-games');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to create game. Please try again.');
+      console.error('Error creating game:', err);
+      const errorMessage = err.response?.data?.error || err.response?.data?.message || 'Failed to create game. Please try again.';
+      
+      // Provide helpful message for group limit error
+      if (errorMessage.includes('maximum') && errorMessage.includes('active groups')) {
+        setError('⚠️ You\'ve reached the maximum of 3 active games/groups. Please delete or leave an existing game before creating a new one.');
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }

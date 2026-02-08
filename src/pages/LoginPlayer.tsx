@@ -12,7 +12,6 @@ const LoginPlayer = () => {
     password: '',
     name: '',
     phone: '',
-    location: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,6 +28,7 @@ const LoginPlayer = () => {
         // Store user in localStorage
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('userRole', user.role);
+        localStorage.setItem('userId', user.id);
         
         // Navigate to player dashboard
         navigate('/player/dashboard');
@@ -39,14 +39,13 @@ const LoginPlayer = () => {
           email: formData.email,
           password: formData.password,
           phone: formData.phone,
-          location: formData.location,
-          sports_interests: ['Football'], // Default, can be customized later
         });
         const user = response.user;
         
         // Store user in localStorage
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('userRole', user.role);
+        localStorage.setItem('userId', user.id);
         
         // Navigate to player dashboard
         navigate('/player/dashboard');
@@ -112,19 +111,6 @@ const LoginPlayer = () => {
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
                     placeholder="1234567890"
-                    required={!isLogin}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Location
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.location}
-                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
-                    placeholder="New York"
                     required={!isLogin}
                   />
                 </div>

@@ -9,6 +9,13 @@ import CreateGame from './pages/player/CreateGame';
 import Discover from './pages/player/Discover';
 import MyGames from './pages/player/MyGames';
 import Turfs from './pages/player/Turfs';
+import GameDetails from './pages/player/GameDetails';
+import GroupChat from './pages/player/GroupChat';
+import Friends from './pages/player/Friends';
+import DirectMessages from './pages/player/DirectMessages';
+import Notifications from './pages/player/Notifications';
+import UserProfile from './pages/player/UserProfile';
+import TurfDetails from './pages/player/TurfDetails';
 import AdminDashboard from './pages/admin/Dashboard';
 import TurfOwnerDashboard from './pages/turfOwner/Dashboard';
 import CreateTurf from './pages/turfOwner/CreateTurf';
@@ -32,6 +39,14 @@ function App() {
         <Route path="/player/discover" element={<Discover />} />
         <Route path="/player/my-games" element={<MyGames />} />
         <Route path="/player/turfs" element={<Turfs />} />
+        <Route path="/player/game/:gameId" element={<GameDetails />} />
+        <Route path="/player/group/:groupId/chat" element={<GroupChat />} />
+        <Route path="/player/friends" element={<Friends />} />
+        <Route path="/player/messages/:friendId" element={<DirectMessages />} />
+        <Route path="/player/notifications" element={<Notifications />} />
+        <Route path="/player/profile" element={<UserProfile />} />
+        <Route path="/player/profile/:userId" element={<UserProfile />} />
+        <Route path="/player/turf/:turfId" element={<TurfDetails />} />
         
         {/* Admin Routes */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />

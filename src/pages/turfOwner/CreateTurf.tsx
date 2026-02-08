@@ -9,14 +9,14 @@ export default function CreateTurf() {
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
-    sport: 'Football',
+    sports: ['Football'],
     address: '',
     latitude: '',
     longitude: '',
     pricePerHour: '',
     openingTime: '',
     closingTime: '',
-    features: '',
+    facilities: '',
   });
 
   useEffect(() => {
@@ -65,11 +65,11 @@ export default function CreateTurf() {
       await turfAPI.create({
         owner_id: user.id,
         name: formData.name,
-        sport: formData.sport,
+        sports: formData.sports,
         location: {
-          address: formData.address,
           lat: parseFloat(formData.latitude),
           lng: parseFloat(formData.longitude),
+          address: formData.address,
         },
         pricing: {
           per_hour: parseFloat(formData.pricePerHour),
@@ -78,7 +78,7 @@ export default function CreateTurf() {
           opening: formData.openingTime,
           closing: formData.closingTime,
         },
-        features: formData.features ? formData.features.split(',').map(f => f.trim()) : [],
+        facilities: formData.facilities ? formData.facilities.split(',').map(f => f.trim()) : [],
       });
 
       navigate('/turf-owner/dashboard');
@@ -136,16 +136,23 @@ export default function CreateTurf() {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-3">
-                Primary Sport
+                Sports Supported
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {sports.map((sport) => (
                   <button
                     key={sport}
                     type="button"
-                    onClick={() => setFormData({ ...formData, sport })}
+                    onClick={() => {
+                      setFormData(prev => ({
+                        ...prev,
+                        sports: prev.sports.includes(sport)
+                          ? prev.sports.filter(s => s !== sport)
+                          : [...prev.sports, sport]
+                      }));
+                    }}
                     className={`p-4 rounded-xl border-2 transition-all ${
-                      formData.sport === sport
+                      formData.sports.includes(sport)
                         ? 'border-green-500 bg-green-50 text-green-700'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
@@ -255,12 +262,12 @@ export default function CreateTurf() {
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Features (comma-separated)
+                Facilities (comma-separated)
               </label>
               <input
                 type="text"
-                value={formData.features}
-                onChange={(e) => setFormData({ ...formData, features: e.target.value })}
+                value={formData.facilities}
+                onChange={(e) => setFormData({ ...formData, facilities: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
                 placeholder="Floodlights, Parking, Changing Rooms"
               />

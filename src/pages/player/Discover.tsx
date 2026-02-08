@@ -175,31 +175,35 @@ export default function Discover() {
         {/* Games List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {games.map((game) => (
-            <div key={game.id} className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow">
+            <div 
+              key={game.id} 
+              className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all cursor-pointer"
+              onClick={() => navigate(`/player/game/${game.id}`)}
+            >
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">{game.sport}</h3>
-                  <p className="text-sm text-gray-500">by {game.user_name}</p>
+                  <h3 className="text-xl font-bold text-gray-900">{game.sport || 'Sport'}</h3>
+                  <p className="text-sm text-gray-500">by {game.user_name || 'Unknown'}</p>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   game.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
                 }`}>
-                  {game.status}
+                  {game.status || 'open'}
                 </span>
               </div>
 
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-sm text-gray-600">
                   <span className="mr-2">📍</span>
-                  {game.location.address}
+                  {game.location?.address || 'Location not specified'}
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <span className="mr-2">📅</span>
-                  {game.date} at {game.time}
+                  {game.date || 'TBD'} at {game.time || 'TBD'}
                 </div>
                 <div className="flex items-center text-sm text-gray-600">
                   <span className="mr-2">👥</span>
-                  {game.accepted_players.length}/{game.players_needed} players
+                  {game.accepted_players?.length || 0}/{game.players_needed || 0} players
                 </div>
                 {game.distance_km && (
                   <div className="flex items-center text-sm text-gray-600">
@@ -209,11 +213,11 @@ export default function Discover() {
                 )}
               </div>
 
-              <p className="text-sm text-gray-700 mb-4 line-clamp-2">{game.description}</p>
+              <p className="text-sm text-gray-700 mb-4 line-clamp-2">{game.description || 'No description provided'}</p>
 
-              <button className="w-full py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
-                Join Game
-              </button>
+              <div className="w-full py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold text-center">
+                View Details
+              </div>
             </div>
           ))}
         </div>

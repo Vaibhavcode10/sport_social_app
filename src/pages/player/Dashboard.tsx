@@ -1,6 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { User } from '../../types';
+import {
+  Search,
+  Plus,
+  Calendar,
+  MapPin,
+  Users,
+  User as UserIcon,
+  Trophy,
+  Target,
+  TrendingUp,
+  Star,
+} from 'lucide-react';
 
 export default function PlayerDashboard() {
   const navigate = useNavigate();
@@ -26,70 +38,100 @@ export default function PlayerDashboard() {
   const quickActions = [
     {
       title: 'Find Games',
-      icon: '🔍',
       description: 'Discover games nearby',
-      gradient: 'from-blue-500 to-indigo-600',
+      icon: Search,
       action: () => navigate('/player/discover'),
     },
     {
       title: 'Create Game',
-      icon: '➕',
       description: 'Organize a new match',
-      gradient: 'from-green-500 to-emerald-600',
+      icon: Plus,
       action: () => navigate('/player/create-game'),
     },
     {
       title: 'My Games',
-      icon: '🎮',
       description: 'View joined games',
-      gradient: 'from-orange-500 to-red-600',
+      icon: Calendar,
       action: () => navigate('/player/my-games'),
     },
     {
       title: 'Book Turf',
-      icon: '🏟️',
       description: 'Reserve a venue',
-      gradient: 'from-purple-500 to-pink-600',
+      icon: MapPin,
       action: () => navigate('/player/turfs'),
+    },
+    {
+      title: 'Friends',
+      description: 'Manage your friends',
+      icon: Users,
+      action: () => navigate('/player/friends'),
+    },
+    {
+      title: 'My Profile',
+      description: 'View and edit profile',
+      icon: UserIcon,
+      action: () => navigate('/player/profile'),
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#F2F4F7] via-white to-[#E0F2FE]">
       {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <nav
+        className="bg-white/90 backdrop-blur-xl border-b-2 border-[#4A148C] sticky top-0 z-50"
+        style={{
+          boxShadow:
+            '0 8px 20px rgba(74, 20, 140, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05)',
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center">
-                <span className="text-white text-xl font-bold">⚽</span>
+              <div
+                className="w-10 h-10 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-lg flex items-center justify-center transform hover:scale-110 hover:rotate-3 transition-all duration-300 cursor-pointer"
+                style={{
+                  boxShadow:
+                    '0 8px 20px rgba(74, 20, 140, 0.3), inset 0 2px 4px rgba(255,255,255,0.2)',
+                }}
+              >
+                <span className="text-white text-lg font-black">SF</span>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="text-xl font-black bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] bg-clip-text text-transparent">
                 SportFinder
               </span>
             </div>
 
-            <div className="flex items-center gap-4">
-              <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <span className="text-2xl">🔔</span>
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/player/notifications')}
+                className="relative px-3 py-2 bg-white rounded-lg hover:scale-105 transition-all duration-300 border-2 border-gray-200"
+              >
+                <span className="text-xs font-black text-gray-700">
+                  Notifications
+                </span>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-[#14B8A6] rounded-full animate-pulse"></span>
               </button>
-              
-              <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-xl">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold">
+
+              <div
+                onClick={() => navigate('/player/profile')}
+                className="flex items-center gap-2 px-3 py-2 bg-white rounded-lg cursor-pointer hover:scale-105 transition-all duration-300 border-2 border-gray-200"
+              >
+                <div className="w-8 h-8 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-lg flex items-center justify-center text-white font-black text-sm">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-gray-900">
+                  <div className="text-xs font-bold text-gray-900">
                     {user.name}
                   </div>
-                  <div className="text-xs text-gray-500">Player</div>
+                  <div className="text-xs text-gray-500 font-semibold">
+                    Athlete
+                  </div>
                 </div>
               </div>
 
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-gray-600 hover:text-red-600 font-medium transition-colors"
+                className="px-4 py-2 text-gray-700 hover:text-[#4A148C] rounded-xl font-bold transition-all"
               >
                 Logout
               </button>
@@ -98,88 +140,122 @@ export default function PlayerDashboard() {
         </div>
       </nav>
 
-      {/* Main Content */}
+      {/* Main */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Welcome Section */}
+        {/* Welcome */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Welcome back, {user.name.split(' ')[0]}! 👋
+          <h1 className="text-4xl font-black bg-gradient-to-r from-[#4A148C] via-[#6A1B9A] to-[#8B5CF6] bg-clip-text text-transparent mb-2">
+            Welcome back, {user.name.split(' ')[0]}!
           </h1>
-          <p className="text-lg text-gray-600">
-            Ready to play? Find a game or create your own.
+          <p className="text-lg text-gray-700 font-medium">
+            Ready to compete? Find a game or create your own.
           </p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm font-medium">Games Played</span>
-              <span className="text-2xl">🎯</span>
-            </div>
-            <div className="text-3xl font-bold text-gray-900">
-              {user.stats?.games_played || 0}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm font-medium">Organized</span>
-              <span className="text-2xl">⭐</span>
-            </div>
-            <div className="text-3xl font-bold text-gray-900">
-              {user.stats?.games_organized || 0}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+          {/* Games Played */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-5 border-2 border-gray-100 hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group" style={{ boxShadow: '0 10px 30px rgba(74, 20, 140, 0.12), 0 4px 12px rgba(74, 20, 140, 0.08)' }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#4A148C]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative">
+              <div className="w-11 h-11 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-lg flex items-center justify-center mb-3" style={{ boxShadow: '0 6px 16px rgba(74, 20, 140, 0.3)' }}>
+                <Trophy className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Games Played</h3>
+              <p className="text-3xl font-black bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] bg-clip-text text-transparent">{user.stats?.games_played || 0}</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm font-medium">Attendance</span>
-              <span className="text-2xl">✅</span>
-            </div>
-            <div className="text-3xl font-bold text-gray-900">
-              {user.stats?.attendance_rate || 100}%
+          {/* Organized */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-5 border-2 border-gray-100 hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group" style={{ boxShadow: '0 10px 30px rgba(255, 159, 28, 0.12), 0 4px 12px rgba(255, 159, 28, 0.08)' }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#FF9F1C]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative">
+              <div className="w-11 h-11 bg-gradient-to-br from-[#FF9F1C] to-[#E68A00] rounded-lg flex items-center justify-center mb-3" style={{ boxShadow: '0 6px 16px rgba(255, 159, 28, 0.3)' }}>
+                <Target className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Organized</h3>
+              <p className="text-3xl font-black bg-gradient-to-br from-[#FF9F1C] to-[#E68A00] bg-clip-text text-transparent">{user.stats?.games_organized || 0}</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm font-medium">Rating</span>
-              <span className="text-2xl">⭐</span>
+          {/* Attendance */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-5 border-2 border-gray-100 hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group" style={{ boxShadow: '0 10px 30px rgba(20, 184, 166, 0.12), 0 4px 12px rgba(20, 184, 166, 0.08)' }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#14B8A6]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative">
+              <div className="w-11 h-11 bg-gradient-to-br from-[#14B8A6] to-[#0D9488] rounded-lg flex items-center justify-center mb-3" style={{ boxShadow: '0 6px 16px rgba(20, 184, 166, 0.3)' }}>
+                <TrendingUp className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Attendance</h3>
+              <p className="text-3xl font-black bg-gradient-to-br from-[#14B8A6] to-[#0D9488] bg-clip-text text-transparent">{user.stats?.attendance_rate || 100}%</p>
             </div>
-            <div className="text-3xl font-bold text-gray-900">
-              {user.stats?.average_rating ? user.stats.average_rating.toFixed(1) : 'N/A'}
+          </div>
+
+          {/* Rating */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl p-5 border-2 border-gray-100 hover:scale-105 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group" style={{ boxShadow: '0 10px 30px rgba(74, 20, 140, 0.12), 0 4px 12px rgba(74, 20, 140, 0.08)' }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#4A148C]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative">
+              <div className="w-11 h-11 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-lg flex items-center justify-center mb-3" style={{ boxShadow: '0 6px 16px rgba(74, 20, 140, 0.3)' }}>
+                <Star className="w-5 h-5 text-white fill-white" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Rating</h3>
+              <p className="text-3xl font-black bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] bg-clip-text text-transparent">{user.stats?.average_rating ? user.stats.average_rating.toFixed(1) : 'N/A'}</p>
             </div>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickActions.map((action) => (
-              <button
-                key={action.title}
-                onClick={action.action}
-                className="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-200 hover:-translate-y-1 text-left"
-              >
-                <div className={`w-14 h-14 bg-gradient-to-br ${action.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-200`}>
-                  {action.icon}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{action.title}</h3>
-                <p className="text-sm text-gray-600">{action.description}</p>
-              </button>
-            ))}
-          </div>
-        </div>
+        <div className="mb-10">
+          <h2 className="text-3xl font-black bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] bg-clip-text text-transparent mb-6">
+            Quick Actions
+          </h2>
 
-        {/* Recent Activity Placeholder */}
-        <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Activity</h2>
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🏃‍♂️</div>
-            <p className="text-gray-600 text-lg mb-4">No recent activity yet</p>
-            <p className="text-gray-500">Start by finding or creating a game!</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {quickActions.map((action, index) => {
+              const Icon = action.icon;
+              const colors = ['#4A148C', '#FF9F1C', '#14B8A6'];
+              const shadowColors = [
+                'rgba(74,20,140,0.12)',
+                'rgba(255,159,28,0.12)',
+                'rgba(20,184,166,0.12)',
+              ];
+              const shadowColorsHover = [
+                'rgba(74,20,140,0.3)',
+                'rgba(255,159,28,0.3)',
+                'rgba(20,184,166,0.3)',
+              ];
+              const i = index % 3;
+
+              return (
+                <button
+                  key={action.title}
+                  onClick={action.action}
+                  className="group bg-white/90 backdrop-blur-sm rounded-xl p-5 border-2 border-gray-100 hover:scale-105 hover:-translate-y-2 transition-all duration-300 text-left relative overflow-hidden"
+                  style={{
+                    boxShadow: `0 10px 30px ${shadowColors[i]}, 0 4px 12px ${shadowColors[i]}`,
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="relative">
+                    <div
+                      className="w-11 h-11 rounded-lg flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
+                      style={{
+                        background: `linear-gradient(135deg, ${colors[i]}, ${colors[i]}dd)`,
+                        boxShadow: `0 6px 16px ${shadowColorsHover[i]}`,
+                      }}
+                    >
+                      <Icon className="w-5 h-5 text-white stroke-[2.5]" />
+                    </div>
+
+                    <h3 className="text-base font-black text-gray-900 mb-1">
+                      {action.title}
+                    </h3>
+                    <p className="text-xs text-gray-600 font-medium">
+                      {action.description}
+                    </p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
       </main>

@@ -30,6 +30,7 @@ const LoginTurfOwner = () => {
         // Store user in localStorage
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('userRole', user.role);
+        localStorage.setItem('userId', user.id);
         
         // Navigate to turf owner dashboard
         navigate('/turf-owner/dashboard');
@@ -48,6 +49,7 @@ const LoginTurfOwner = () => {
         // Store user in localStorage
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('userRole', user.role);
+        localStorage.setItem('userId', user.id);
         
         // Navigate to turf owner dashboard
         navigate('/turf-owner/dashboard');
