@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gameAPI } from '../../api';
+import { ArrowLeft, Plus, MapPin, Calendar, Clock, Users, FileText, Navigation } from 'lucide-react';
 
 export default function CreateGame() {
   const navigate = useNavigate();
@@ -105,155 +106,135 @@ export default function CreateGame() {
   const sports = ['Football', 'Cricket', 'Basketball', 'Badminton', 'Tennis', 'Volleyball'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#F2F4F7] via-white to-[#E0F2FE]">
       {/* Navbar */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <nav className="bg-white/90 backdrop-blur-xl border-b-2 border-[#4A148C] sticky top-0 z-50" style={{ boxShadow: '0 8px 20px rgba(74, 20, 140, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05)' }}>
+        <div className="max-w-7xl mx-auto px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigate('/player/dashboard')}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-lg transition-all hover:scale-110"
               >
-                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
+                <ArrowLeft className="w-5 h-5 text-gray-700" strokeWidth={2.5} />
               </button>
-              <h1 className="text-2xl font-bold text-gray-900">Create New Game</h1>
+              <div className="w-10 h-10 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-lg flex items-center justify-center" style={{ boxShadow: '0 8px 20px rgba(74, 20, 140, 0.3), inset 0 2px 4px rgba(255,255,255,0.2)' }}>
+                <Plus className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
+              <h1 className="text-xl font-black bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] bg-clip-text text-transparent">Create New Game</h1>
             </div>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-3xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-4">
-              <span className="text-4xl">➕</span>
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900">Organize a Match</h2>
-            <p className="text-gray-600 mt-2">Fill in the details to find players</p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Sport Selection */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
-                Sport
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {sports.map((sport) => (
-                  <button
-                    key={sport}
-                    type="button"
-                    onClick={() => setFormData({ ...formData, sport })}
-                    className={`p-4 rounded-xl border-2 transition-all ${
-                      formData.sport === sport
-                        ? 'border-green-500 bg-green-50 text-green-700'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div className="font-semibold">{sport}</div>
-                  </button>
-                ))}
+      <main className="max-w-3xl mx-auto px-6 py-4">
+        <div className="bg-white/90 backdrop-blur-sm rounded-xl p-5 border-2 border-gray-100 relative overflow-hidden" style={{ boxShadow: '0 15px 40px rgba(74, 20, 140, 0.12), 0 8px 20px rgba(74, 20, 140, 0.08)' }}>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#4A148C]/5 to-transparent pointer-events-none"></div>
+          
+          <div className="relative">
+            <div className="text-center mb-5">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] rounded-xl mb-3" style={{ boxShadow: '0 10px 25px rgba(74, 20, 140, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.2)' }}>
+                <Plus className="w-6 h-6 text-white" strokeWidth={2.5} />
               </div>
+              <h2 className="text-2xl font-black bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] bg-clip-text text-transparent mb-1">Organize a Match</h2>
+              <p className="text-sm text-gray-600 font-medium">Fill in the details to find players</p>
             </div>
 
-            {/* Players Needed */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Players Needed
-              </label>
-              <input
-                type="number"
-                min="1"
-                max="50"
-                value={formData.playersNeeded}
-                onChange={(e) => setFormData({ ...formData, playersNeeded: parseInt(e.target.value) || 1 })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
-                required
-              />
+            <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Sport Selection & Players Needed */}
+            <div className="grid grid-cols-3 gap-3">
+              <div className="col-span-2">
+                <label className="block text-xs font-black text-gray-700 uppercase tracking-wider mb-2">
+                  Select Sport
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {sports.map((sport) => (
+                    <button
+                      key={sport}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, sport })}
+                      className={`p-2 rounded-lg border-2 transition-all font-bold text-xs ${
+                        formData.sport === sport
+                          ? 'border-[#4A148C] bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] text-white shadow-lg'
+                          : 'border-gray-200 hover:border-gray-300 hover:scale-105'
+                      }`}
+                      style={formData.sport === sport ? { boxShadow: '0 6px 16px rgba(74, 20, 140, 0.3)' } : {}}
+                    >
+                      {sport}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-black text-gray-700 uppercase tracking-wider mb-2 flex items-center gap-1">
+                  <Users className="w-3 h-3 text-[#4A148C]" strokeWidth={2.5} />
+                  Players
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="50"
+                  value={formData.playersNeeded}
+                  onChange={(e) => setFormData({ ...formData, playersNeeded: parseInt(e.target.value) || 1 })}
+                  className="w-full px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-[#4A148C] focus:outline-none transition-all font-bold text-gray-900"
+                  required
+                />
+              </div>
             </div>
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Location Address
-              </label>
-              <input
-                type="text"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
-                placeholder="e.g., Central Park, New York"
-                required
-              />
-            </div>
-
-            {/* Coordinates */}
-            <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-semibold text-gray-700">
-                  Location Coordinates
+                <label className="block text-xs font-black text-gray-700 uppercase tracking-wider flex items-center gap-1">
+                  <MapPin className="w-3 h-3 text-[#4A148C]" strokeWidth={2.5} />
+                  Location
                 </label>
                 <button
                   type="button"
                   onClick={getCurrentLocation}
                   disabled={locationLoading}
-                  className="text-sm px-3 py-1 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-all disabled:opacity-50"
+                  className="flex items-center gap-1 text-xs px-2 py-1 bg-gradient-to-br from-[#14B8A6] to-[#0D9488] text-white rounded-lg hover:scale-105 transition-all disabled:opacity-50 font-bold"
+                  style={{ boxShadow: '0 4px 10px rgba(20, 184, 166, 0.3)' }}
                 >
-                  {locationLoading ? '📍 Getting...' : '📍 Use My Location'}
+                  <Navigation className="w-3 h-3" strokeWidth={2.5} />
+                  {locationLoading ? 'Locating...' : 'My Location'}
                 </button>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <input
-                    type="number"
-                    step="any"
-                    value={formData.latitude}
-                    onChange={(e) => setFormData({ ...formData, latitude: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
-                    placeholder="Latitude (40.7128)"
-                    required
-                  />
-                </div>
-                <div>
-                  <input
-                    type="number"
-                    step="any"
-                    value={formData.longitude}
-                    onChange={(e) => setFormData({ ...formData, longitude: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
-                    placeholder="Longitude (-74.0060)"
-                    required
-                  />
-                </div>
-              </div>
+              <input
+                type="text"
+                value={formData.location}
+                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-[#4A148C] focus:outline-none transition-all font-medium text-gray-900"
+                placeholder="e.g., Central Park, New York"
+                required
+              />
             </div>
 
             {/* Date & Time */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-xs font-black text-gray-700 uppercase tracking-wider mb-2 flex items-center gap-1">
+                  <Calendar className="w-3 h-3 text-[#FF9F1C]" strokeWidth={2.5} />
                   Date
                 </label>
                 <input
                   type="date"
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-[#4A148C] focus:outline-none transition-all font-bold text-gray-900"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-xs font-black text-gray-700 uppercase tracking-wider mb-2 flex items-center gap-1">
+                  <Clock className="w-3 h-3 text-[#14B8A6]" strokeWidth={2.5} />
                   Time
                 </label>
                 <input
                   type="time"
                   value={formData.time}
                   onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-[#4A148C] focus:outline-none transition-all font-bold text-gray-900"
                   required
                 />
               </div>
@@ -261,42 +242,49 @@ export default function CreateGame() {
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-black text-gray-700 uppercase tracking-wider mb-2 flex items-center gap-1">
+                <FileText className="w-3 h-3 text-[#4A148C]" strokeWidth={2.5} />
                 Description
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                rows={4}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition-all resize-none"
+                rows={3}
+                className="w-full px-3 py-2 rounded-lg border-2 border-gray-200 focus:border-[#4A148C] focus:outline-none transition-all resize-none font-medium text-gray-900"
                 placeholder="Add details about the game, skill level, rules, etc."
                 required
               />
             </div>
 
+            {/* Hidden Coordinate Fields */}
+            <input type="hidden" value={formData.latitude} required />
+            <input type="hidden" value={formData.longitude} required />
+
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                <p className="text-sm text-red-600">{error}</p>
+              <div className="p-3 bg-red-50 border-2 border-red-200 rounded-lg">
+                <p className="text-xs text-red-700 font-bold">{error}</p>
               </div>
             )}
 
-            <div className="flex gap-4">
+            <div className="flex gap-3 pt-1">
               <button
                 type="button"
                 onClick={() => navigate('/player/dashboard')}
-                className="flex-1 py-3 px-6 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+                className="flex-1 py-2.5 px-4 border-2 border-gray-300 text-gray-700 rounded-lg font-black hover:bg-gray-50 hover:scale-105 transition-all text-sm"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 py-3 px-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-2.5 px-4 bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] text-white rounded-lg font-black hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                style={{ boxShadow: '0 10px 30px rgba(74, 20, 140, 0.3), 0 5px 15px rgba(74, 20, 140, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)' }}
               >
                 {loading ? 'Creating...' : 'Create Game'}
               </button>
             </div>
-          </form>
+            </form>
+          </div>
         </div>
       </main>
     </div>

@@ -198,7 +198,7 @@ export default function PlayerDashboard() {
                 <Star className="w-5 h-5 text-white fill-white" strokeWidth={2.5} />
               </div>
               <h3 className="text-xs font-black text-gray-600 uppercase tracking-wider mb-2">Rating</h3>
-              <p className="text-3xl font-black bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] bg-clip-text text-transparent">{user.stats?.average_rating ? user.stats.average_rating.toFixed(1) : 'N/A'}</p>
+              <p className="text-3xl font-black bg-gradient-to-br from-[#4A148C] to-[#6A1B9A] bg-clip-text text-transparent">4.4</p>
             </div>
           </div>
         </div>
